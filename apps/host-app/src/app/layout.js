@@ -11,7 +11,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-primary)' }}>
+        <div className="tf-bg-glow-container">
+          <div className="tf-bg-glow-1"></div>
+          <div className="tf-bg-glow-2"></div>
+        </div>
+        <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-primary)', position: 'relative', zIndex: 1 }}>
           
           {/* Sidebar (SSR Rendered Frame) */}
           <aside style={{

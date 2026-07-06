@@ -2,55 +2,38 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 
-// Reusable script loader
-const useScript = (url) => {
-  const [ready, setReady] = useState(false);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    if (!url) return;
-
-    let script = document.querySelector(`script[src="${url}"]`);
-
-    if (!script) {
-      script = document.createElement('script');
-      script.src = url;
-      script.type = 'text/javascript';
-      script.async = true;
-      script.onload = () => setReady(true);
-      script.onerror = () => setError(true);
-      document.head.appendChild(script);
-    } else {
-      setReady(true);
-    }
-  }, [url]);
-
-  return { ready, error };
-};
-
 export function RemoteReactLoader({ url, scope, module }) {
-  const { ready, error } = useScript(url);
   const [Component, setComponent] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!ready || error) return;
-
+    let isActive = true;
+    
     const loadComponent = async () => {
       try {
-        const container = window[scope];
-        if (!container) {
-          throw new Error(`Global container ${scope} not found on window`);
-        }
-        const factory = await container.get(module);
+        // Native ESM dynamic import of Vite federation remoteEntry
+        const remoteModule = await import(/* @vite-ignore */ url);
+        
+        const factory = await remoteModule.get(module);
         const Module = factory();
-        setComponent(() => Module.default);
+        
+        if (isActive) {
+          setComponent(() => Module.default);
+        }
       } catch (err) {
-        console.error(`Error loading remote component ${module} from scope ${scope}:`, err);
+        console.error(`Error loading remote component ${module} from scope ${scope} at ${url}:`, err);
+        if (isActive) {
+          setError(err);
+        }
       }
     };
 
     loadComponent();
-  }, [ready, error, scope, module]);
+
+    return () => {
+      isActive = false;
+    };
+  }, [url, scope, module]);
 
   if (error) {
     return (
@@ -64,13 +47,13 @@ export function RemoteReactLoader({ url, scope, module }) {
       }}>
         <h3>⚠️ Microfrontend Loading Failed</h3>
         <p style={{ fontSize: '0.9rem', marginTop: '0.5rem', color: 'var(--text-secondary)' }}>
-          Remote `{scope}` is currently offline. Please check if the port is running.
+          Remote `{scope}` at `{url}` is currently offline. Please check if the port is running.
         </p>
       </div>
     );
   }
 
-  if (!ready || !Component) {
+  if (!Component) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '200px', gap: '1rem' }}>
         <div style={{
@@ -96,38 +79,41 @@ export function RemoteReactLoader({ url, scope, module }) {
 }
 
 export function RemoteVueLoader({ url, scope, module }) {
-  const { ready, error } = useScript(url);
   const containerRef = useRef(null);
-  const [loadError, setLoadError] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (!ready || error || !containerRef.current) return;
-
+    let isActive = true;
     let unmountFn = null;
 
     const loadAndMount = async () => {
       try {
-        const container = window[scope];
-        if (!container) {
-          throw new Error(`Global container ${scope} not found on window`);
-        }
-        const factory = await container.get(module);
+        // Native ESM dynamic import of Vite federation remoteEntry
+        const remoteModule = await import(/* @vite-ignore */ url);
+        
+        const factory = await remoteModule.get(module);
         const Module = factory();
-        unmountFn = Module.mount(containerRef.current);
+        
+        if (isActive && containerRef.current) {
+          unmountFn = Module.mount(containerRef.current);
+        }
       } catch (err) {
-        console.error(`Error mounting Vue remote from ${scope}:`, err);
-        setLoadError(true);
+        console.error(`Error mounting Vue remote from ${scope} at ${url}:`, err);
+        if (isActive) {
+          setError(err);
+        }
       }
     };
 
     loadAndMount();
 
     return () => {
+      isActive = false;
       if (unmountFn) unmountFn();
     };
-  }, [ready, error, scope, module]);
+  }, [url, scope, module]);
 
-  if (error || loadError) {
+  if (error) {
     return (
       <div style={{
         padding: '2rem',
@@ -139,30 +125,8 @@ export function RemoteVueLoader({ url, scope, module }) {
       }}>
         <h3>⚠️ Vue Remote Loading Failed</h3>
         <p style={{ fontSize: '0.9rem', marginTop: '0.5rem', color: 'var(--text-secondary)' }}>
-          Remote `{scope}` is currently offline. Please check if the port is running.
+          Remote `{scope}` at `{url}` is currently offline. Please check if the port is running.
         </p>
-      </div>
-    );
-  }
-
-  if (!ready) {
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '200px', gap: '1rem' }}>
-        <div style={{
-          width: '40px',
-          height: '40px',
-          border: '4px solid rgba(99, 102, 241, 0.1)',
-          borderTop: '4px solid var(--primary)',
-          borderRadius: '50%',
-          animation: 'spin 1s linear infinite'
-        }} />
-        <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Connecting to remote {scope}...</span>
-        <style>{`
-          @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-          }
-        `}</style>
       </div>
     );
   }
