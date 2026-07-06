@@ -1,5 +1,6 @@
 import React from 'react';
 import Navigation from '../components/Navigation';
+import ReactExposer from '../components/ReactExposer';
 import 'shared-ui/src/index.css';
 
 export const metadata = {
@@ -11,6 +12,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
+        <ReactExposer />
         <div className="tf-bg-glow-container">
           <div className="tf-bg-glow-1"></div>
           <div className="tf-bg-glow-2"></div>
