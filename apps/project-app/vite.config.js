@@ -14,6 +14,9 @@ export default defineConfig({
       shared: ['vue'],
     }),
   ],
+  preview: {
+    cors: true,
+  },
   build: {
     modulePreload: false,
     target: 'esnext',

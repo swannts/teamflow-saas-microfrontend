@@ -14,6 +14,9 @@ export default defineConfig({
       shared: ['react', 'react-dom'],
     }),
   ],
+  preview: {
+    cors: true,
+  },
   build: {
     modulePreload: false,
     target: 'esnext',
