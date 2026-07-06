@@ -4,9 +4,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --port 3002 --strictPort",
+    "dev": "vite --port 3002 --strictPort --host 0.0.0.0",
     "build": "vite build",
-    "preview": "vite preview --port 3002 --strictPort"
+    "preview": "vite preview --port 3002 --strictPort --host 0.0.0.0"
   },
   "dependencies": {
     "vue": "^3.4.31",

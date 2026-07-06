@@ -1,4 +1,4 @@
-// File: /home/swann/IdeaProjects/teamflow-saas-microfrontend/apps/host-app/src/app/tasks/page.js
+// File: /app/apps/host-app/src/app/tasks/page.js
 import * as entry from '../../../../src/app/tasks/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
