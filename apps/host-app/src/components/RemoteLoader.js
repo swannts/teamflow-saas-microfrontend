@@ -11,8 +11,8 @@ export function RemoteReactLoader({ url, scope, module }) {
     
     const loadComponent = async () => {
       try {
-        // Native ESM dynamic import of Vite federation remoteEntry
-        const remoteModule = await import(/* @vite-ignore */ url);
+        // Bypasses Next.js Webpack parser to execute native browser ESM import
+        const remoteModule = await eval(`import("${url}")`);
         
         const factory = await remoteModule.get(module);
         const Module = factory();
@@ -88,8 +88,8 @@ export function RemoteVueLoader({ url, scope, module }) {
 
     const loadAndMount = async () => {
       try {
-        // Native ESM dynamic import of Vite federation remoteEntry
-        const remoteModule = await import(/* @vite-ignore */ url);
+        // Bypasses Next.js Webpack parser to execute native browser ESM import
+        const remoteModule = await eval(`import("${url}")`);
         
         const factory = await remoteModule.get(module);
         const Module = factory();
