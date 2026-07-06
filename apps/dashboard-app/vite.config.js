@@ -17,7 +17,6 @@ export default defineConfig({
       exposes: {
         './DashboardComponent': './src/DashboardComponent.jsx',
       },
-      shared: ['react', 'react-dom'],
     }),
   ],
   preview: {

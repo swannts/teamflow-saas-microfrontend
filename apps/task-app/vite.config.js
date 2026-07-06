@@ -17,7 +17,6 @@ export default defineConfig({
       exposes: {
         './TaskKanbanComponent': './src/TaskKanbanComponent.jsx',
       },
-      shared: ['react', 'react-dom'],
     }),
   ],
   preview: {
