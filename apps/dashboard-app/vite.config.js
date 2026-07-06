@@ -4,10 +4,10 @@ import federation from '@originjs/vite-plugin-federation';
 
 export default defineConfig({
   resolve: {
-    alias: {
-      react: 'shared-ui/src/shims/react.js',
-      'react-dom': 'shared-ui/src/shims/react-dom.js',
-    },
+    alias: [
+      { find: /^react$/, replacement: 'shared-ui/src/shims/react.js' },
+      { find: /^react-dom$/, replacement: 'shared-ui/src/shims/react-dom.js' },
+    ],
   },
   plugins: [
     react(),
