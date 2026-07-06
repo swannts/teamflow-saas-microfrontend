@@ -1,0 +1,20 @@
+{
+  "name": "teamflow-saas-microfrontend",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:host\" \"npm run dev:dashboard\" \"npm run dev:projects\" \"npm run dev:tasks\"",
+    "dev:host": "npm run dev -w apps/host-app",
+    "dev:dashboard": "npm run dev -w apps/dashboard-app",
+    "dev:projects": "npm run dev -w apps/project-app",
+    "dev:tasks": "npm run dev -w apps/task-app",
+    "build": "npm run build --workspaces --if-present",
+    "preview": "npm run preview --workspaces --if-present"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
