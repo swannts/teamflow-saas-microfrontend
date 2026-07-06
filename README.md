@@ -130,7 +130,7 @@ This project includes Docker configuration for both development and production e
 Runs all microfrontend dev servers concurrently with local code directory sharing:
 ```bash
 # Start all dev servers via Docker Compose
-docker-compose -f docker-compose.dev.yml up --build
+docker-compose -f docker/docker-compose.dev.yml up --build
 ```
 Access the host app at [http://localhost:3000](http://localhost:3000).
 
@@ -138,7 +138,7 @@ Access the host app at [http://localhost:3000](http://localhost:3000).
 Runs static production builds inside separate Nginx containers, mapping the identical development ports so Module Federation works out-of-the-box:
 ```bash
 # Build production bundle and start separate Nginx services
-docker-compose -f docker-compose.prod.yml up --build
+docker-compose -f docker/docker-compose.prod.yml up --build
 ```
 Access the application at [http://localhost:3000](http://localhost:3000).
 

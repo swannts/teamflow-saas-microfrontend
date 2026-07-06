@@ -3,15 +3,15 @@ version: '3.8'
 services:
   teamflow-dev:
     build:
-      context: .
-      dockerfile: Dockerfile.dev
+      context: ..
+      dockerfile: docker/Dockerfile.dev
     ports:
       - "3000:3000"
       - "3001:3001"
       - "3002:3002"
       - "3003:3003"
     volumes:
-      - .:/app
+      - ..:/app
       - /app/node_modules
       - /app/apps/host-app/node_modules
       - /app/apps/dashboard-app/node_modules
