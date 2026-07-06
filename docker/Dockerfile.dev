@@ -17,5 +17,6 @@ COPY . .
 EXPOSE 3000 3001 3002 3003
 
 # Vite Module Federation requires remoteEntry.js files, which are generated only at build time.
-# Therefore, we build all workspaces, run next dev for the host app, and vite preview for remotes.
-CMD ["sh", "-c", "npm run build && npx concurrently \"npm run dev -w apps/host-app\" \"npm run preview -w apps/dashboard-app\" \"npm run preview -w apps/project-app\" \"npm run preview -w apps/task-app\""]
+# We build only the remote applications (dashboard, project, task) to generate these assets.
+# The host-app is run in development mode (next dev) directly so it compiles dynamically.
+CMD ["sh", "-c", "npm run build -w apps/dashboard-app -w apps/project-app -w apps/task-app && npx concurrently \"npm run dev -w apps/host-app\" \"npm run preview -w apps/dashboard-app\" \"npm run preview -w apps/project-app\" \"npm run preview -w apps/task-app\""]

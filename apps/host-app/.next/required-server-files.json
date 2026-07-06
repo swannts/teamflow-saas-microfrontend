@@ -2,6 +2,7 @@
   "version": 1,
   "config": {
     "env": {},
+    "webpack": null,
     "eslint": {
       "ignoreDuringBuilds": false
     },
@@ -203,7 +204,10 @@
       "trustHostHeader": false,
       "isExperimentalCompile": false
     },
-    "configFileName": "next.config.mjs"
+    "configFileName": "next.config.mjs",
+    "transpilePackages": [
+      "shared-ui"
+    ]
   },
   "appDir": "/app/apps/host-app",
   "relativeAppDir": "apps/host-app",
