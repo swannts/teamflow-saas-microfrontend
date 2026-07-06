@@ -14,7 +14,8 @@ This project showcases a modern SaaS portal with a React host app dynamically lo
 5. [Applications & Responsibilities](#applications--responsibilities)
 6. [Getting Started & Installation](#getting-started--installation)
 7. [Running the Application](#running-the-application)
-8. [Learning Roadmap & Next Steps](#learning-roadmap--next-steps)
+8. [Docker Configuration](#docker-configuration)
+9. [Learning Roadmap & Next Steps](#learning-roadmap--next-steps)
 
 ---
 
@@ -118,6 +119,28 @@ To build the microfrontends and generate remote entry files:
 npm run build
 ```
 This builds all applications into their local `dist/` directories, ready for deployment.
+
+---
+
+## Docker Configuration
+
+This project includes Docker configuration for both development and production environments.
+
+### 1. Development Mode (with hot-reloading)
+Runs all microfrontend dev servers concurrently with local code directory sharing:
+```bash
+# Start all dev servers via Docker Compose
+docker-compose -f docker-compose.dev.yml up --build
+```
+Access the host app at [http://localhost:3000](http://localhost:3000).
+
+### 2. Production Mode (with Nginx & CORS enabled)
+Runs static production builds inside separate Nginx containers, mapping the identical development ports so Module Federation works out-of-the-box:
+```bash
+# Build production bundle and start separate Nginx services
+docker-compose -f docker-compose.prod.yml up --build
+```
+Access the application at [http://localhost:3000](http://localhost:3000).
 
 ---
 

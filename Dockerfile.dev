@@ -1,0 +1,19 @@
+FROM node:20-slim
+
+WORKDIR /app
+
+COPY package*.json ./
+COPY packages/shared-ui/package*.json ./packages/shared-ui/
+COPY packages/shared-utils/package*.json ./packages/shared-utils/
+COPY apps/host-app/package*.json ./apps/host-app/
+COPY apps/dashboard-app/package*.json ./apps/dashboard-app/
+COPY apps/project-app/package*.json ./apps/project-app/
+COPY apps/task-app/package*.json ./apps/task-app/
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 3000 3001 3002 3003
+
+CMD ["npm", "run", "dev"]

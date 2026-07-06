@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  host-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+      target: host-app
+    ports:
+      - "3000:80"
+
+  dashboard-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+      target: dashboard-app
+    ports:
+      - "3001:80"
+
+  project-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+      target: project-app
+    ports:
+      - "3002:80"
+
+  task-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+      target: task-app
+    ports:
+      - "3003:80"

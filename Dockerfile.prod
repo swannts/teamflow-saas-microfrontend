@@ -1,0 +1,41 @@
+# --- Build Stage ---
+FROM node:20-slim AS builder
+WORKDIR /app
+COPY package*.json ./
+COPY packages/shared-ui/package*.json ./packages/shared-ui/
+COPY packages/shared-utils/package*.json ./packages/shared-utils/
+COPY apps/host-app/package*.json ./apps/host-app/
+COPY apps/dashboard-app/package*.json ./apps/dashboard-app/
+COPY apps/project-app/package*.json ./apps/project-app/
+COPY apps/task-app/package*.json ./apps/task-app/
+RUN npm install
+COPY . .
+RUN npm run build
+
+# --- Host App ---
+FROM nginx:alpine AS host-app
+COPY --from=builder /app/apps/host-app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+
+# --- Dashboard App ---
+FROM nginx:alpine AS dashboard-app
+COPY --from=builder /app/apps/dashboard-app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+
+# --- Project App ---
+FROM nginx:alpine AS project-app
+COPY --from=builder /app/apps/project-app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+
+# --- Task App ---
+FROM nginx:alpine AS task-app
+COPY --from=builder /app/apps/task-app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
