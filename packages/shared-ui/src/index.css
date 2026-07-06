@@ -56,6 +56,12 @@
 
 body {
   background-color: var(--bg-primary);
+  background-image: 
+    radial-gradient(at top left, rgba(139, 92, 246, 0.05) 0%, transparent 40%),
+    radial-gradient(at top right, rgba(217, 70, 239, 0.03) 0%, transparent 40%),
+    linear-gradient(rgba(255, 255, 255, 0.003) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.003) 1px, transparent 1px);
+  background-size: auto, auto, 40px 40px, 40px 40px;
   color: var(--text-primary);
   font-family: var(--font-family);
   -webkit-font-smoothing: antialiased;

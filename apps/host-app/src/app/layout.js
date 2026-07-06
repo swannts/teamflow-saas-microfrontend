@@ -54,14 +54,50 @@ export default function RootLayout({ children }) {
             {/* Client-side navigation */}
             <Navigation />
 
+            {/* User Profile Card inside Sidebar */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.75rem',
+              padding: '0.85rem 0.5rem',
+              marginTop: 'auto',
+              marginBottom: '1rem',
+              borderTop: '1px solid var(--border-color)',
+              paddingTop: '1.25rem'
+            }}>
+              <div style={{
+                width: '36px',
+                height: '36px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, var(--accent), var(--primary))',
+                color: '#fff',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: 600,
+                fontSize: '0.85rem',
+                border: '1px solid rgba(255, 255, 255, 0.1)'
+              }}>
+                SD
+              </div>
+              <div style={{ flex: 1, overflow: 'hidden' }}>
+                <span style={{ fontSize: '0.85rem', fontWeight: 600, display: 'block', color: '#fff', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+                  Swann Dev
+                </span>
+                <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'block' }}>
+                  swann@teamflow.io
+                </span>
+              </div>
+            </div>
+
             {/* Footer Info */}
             <div style={{
-              fontSize: '0.75rem',
+              fontSize: '0.675rem',
               color: 'var(--text-muted)',
-              paddingTop: '1rem',
-              borderTop: '1px solid rgba(255,255,255,0.05)'
+              textAlign: 'center',
+              opacity: 0.7
             }}>
-              Next.js SSR Host v1.0
+              TeamFlow Workspace v1.1
             </div>
           </aside>
 
