@@ -5,6 +5,9 @@ if (typeof window !== 'undefined' && !React) {
 }
 
 export default React;
+
+export const __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED = React ? React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED : undefined;
+
 export const {
   useState,
   useEffect,
