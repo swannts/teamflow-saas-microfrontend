@@ -12,12 +12,16 @@ RUN npm install
 COPY . .
 RUN npm run build
 
-# --- Host App ---
-FROM nginx:alpine AS host-app
-COPY --from=builder /app/apps/host-app/dist /usr/share/nginx/html
-COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# --- Host App (Next.js SSR Server) ---
+FROM node:20-slim AS host-app
+WORKDIR /app
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/packages ./packages
+COPY --from=builder /app/apps/host-app ./apps/host-app
+COPY --from=builder /app/node_modules ./node_modules
+EXPOSE 3000
+ENV NODE_ENV=production
+CMD ["npm", "run", "start", "-w", "apps/host-app"]
 
 # --- Dashboard App ---
 FROM nginx:alpine AS dashboard-app
