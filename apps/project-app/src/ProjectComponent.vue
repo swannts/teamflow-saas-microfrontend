@@ -1,12 +1,14 @@
 <template>
-  <div class="projects-container">
+  <div class="flex flex-col gap-8 animate-fade-in">
     <!-- Header -->
-    <div class="projects-header">
+    <div class="flex justify-between items-center">
       <div>
-        <h1 class="page-title">Projects</h1>
-        <p class="subtitle">Manage, filter, and track all active workspaces.</p>
+        <h1 class="text-3xl font-extrabold mb-1 tracking-tight bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">
+          Projects
+        </h1>
+        <p class="text-text-secondary text-sm">Manage, filter, and track all active workspaces.</p>
       </div>
-      <button class="tf-btn tf-btn-primary" @click="createNewProject">
+      <button class="bg-primary text-white border border-primary/20 hover:bg-primary-hover hover:-translate-y-0.5 shadow-[0_4px_20px_rgba(139,92,246,0.25)] px-5 py-2.5 rounded-sm text-sm font-semibold tracking-wide transition-all duration-200 inline-flex items-center justify-center gap-2 cursor-pointer outline-none" @click="createNewProject">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <line x1="12" y1="5" x2="12" y2="19"></line>
           <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -16,9 +18,9 @@
     </div>
 
     <!-- Filters & Search Bar -->
-    <div class="filters-bar">
-      <div class="search-wrapper">
-        <span class="search-icon">
+    <div class="flex flex-wrap gap-5 justify-between items-center">
+      <div class="relative w-full max-w-[320px]">
+        <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-secondary flex items-center pointer-events-none">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -28,15 +30,20 @@
           type="text" 
           v-model="searchQuery" 
           placeholder="Search projects..." 
-          class="tf-input search-input"
+          class="pl-10 w-full bg-white/3 border border-border-color focus:border-primary/40 rounded-sm px-4 py-2.5 text-sm text-white placeholder-text-muted outline-none transition-all"
         />
       </div>
       
-      <div class="filter-buttons">
+      <div class="flex gap-2.5">
         <button 
           v-for="filter in filters" 
           :key="filter"
-          :class="['tf-btn', activeFilter === filter ? 'tf-btn-primary' : 'tf-btn-secondary']"
+          :class="[
+            'px-5 py-2.5 rounded-sm text-sm font-semibold tracking-wide border transition-all duration-200 inline-flex items-center justify-center gap-2 cursor-pointer outline-none', 
+            activeFilter === filter 
+              ? 'bg-primary text-white border-primary/20 hover:bg-primary-hover hover:-translate-y-0.5 shadow-[0_4px_20px_rgba(139,92,246,0.25)]' 
+              : 'bg-white/5 text-text-primary border-white/10 hover:bg-white/10 hover:-translate-y-0.5'
+          ]"
           @click="activeFilter = filter"
         >
           {{ filter }}
@@ -45,52 +52,55 @@
     </div>
 
     <!-- Project List Grid -->
-    <div class="projects-grid">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div 
         v-for="project in filteredProjects" 
         :key="project.id" 
-        class="tf-card project-card animate-fade-in"
+        class="bg-glass-bg backdrop-blur-[20px] border border-glass-border rounded-md p-6 flex flex-col justify-between gap-6 min-h-[260px] hover:border-primary/20 hover:scale-[1.01] transition-all duration-300 animate-fade-in"
       >
-        <div class="card-header">
+        <div class="flex justify-between items-center">
           <span 
-            :class="['tf-badge', getStatusBadgeClass(project.status)]"
+            :class="[
+              'text-[0.7rem] font-bold px-3 py-1 rounded-full uppercase tracking-wider border inline-flex items-center gap-1.5 transition-all', 
+              getStatusBadgeClass(project.status)
+            ]"
           >
             {{ project.status }}
           </span>
-          <span class="due-date">Due: {{ formatDateHelper(project.dueDate) }}</span>
+          <span class="text-xs text-text-muted font-medium">Due: {{ formatDateHelper(project.dueDate) }}</span>
         </div>
 
-        <div class="card-body">
-          <h3 class="project-name">{{ project.name }}</h3>
-          <p class="project-desc">{{ project.description }}</p>
+        <div class="flex flex-col gap-2 grow">
+          <h3 class="text-lg font-bold text-white tracking-tight">{{ project.name }}</h3>
+          <p class="text-sm text-text-secondary leading-relaxed">{{ project.description }}</p>
         </div>
 
         <!-- Progress bar -->
-        <div class="progress-section">
-          <div class="progress-label">
+        <div class="flex flex-col gap-2">
+          <div class="flex justify-between text-xs text-text-secondary font-semibold">
             <span>Progress</span>
-            <span class="progress-pct">{{ project.progress }}%</span>
+            <span class="text-white">{{ project.progress }}%</span>
           </div>
-          <div class="progress-track">
-            <div class="progress-bar" :style="{ width: project.progress + '%' }"></div>
+          <div class="h-1.5 bg-white/3 rounded-full overflow-hidden border border-white/2">
+            <div class="h-full bg-gradient-to-r from-primary to-accent rounded-full transition-all duration-300 shadow-[0_0_8px_rgba(139,92,246,0.3)]" :style="{ width: project.progress + '%' }"></div>
           </div>
         </div>
 
         <!-- Card Footer -->
-        <div class="card-footer">
-          <div class="owner-info">
+        <div class="flex justify-between items-center border-t border-border-color pt-4">
+          <div class="flex items-center gap-3">
             <div 
-              class="owner-avatar" 
+              class="w-8 h-8 rounded-full text-white flex items-center justify-center text-[11px] font-bold border border-white/10" 
               :style="{ backgroundColor: project.owner.color }"
             >
               {{ project.owner.initials }}
             </div>
             <div>
-              <p class="owner-name">{{ project.owner.name }}</p>
-              <p class="owner-role">{{ project.owner.role }}</p>
+              <p class="text-xs font-semibold text-white m-0">{{ project.owner.name }}</p>
+              <p class="text-[10px] text-text-muted m-0">{{ project.owner.role }}</p>
             </div>
           </div>
-          <span class="tasks-badge">
+          <span class="text-xs text-text-secondary bg-white/3 px-2.5 py-1.5 rounded-sm inline-flex items-center gap-1.5 border border-white/3">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
               <polyline points="14 2 14 8 20 8"></polyline>
@@ -132,11 +142,11 @@ export default {
     const getStatusBadgeClass = (status) => {
       switch (status) {
         case STATUS_CONSTANTS.PROJECTS.COMPLETED:
-          return 'tf-badge-success';
+          return 'bg-success/10 text-success border-success/20 shadow-[0_0_10px_rgba(16,185,129,0.1)]';
         case STATUS_CONSTANTS.PROJECTS.ON_HOLD:
-          return 'tf-badge-warning';
+          return 'bg-warning/10 text-warning border-warning/20 shadow-[0_0_10px_rgba(245,158,11,0.1)]';
         default:
-          return 'tf-badge-info';
+          return 'bg-info/10 text-info border-info/20 shadow-[0_0_10px_rgba(6,182,212,0.1)]';
       }
     };
 
@@ -160,198 +170,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.projects-container {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.projects-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.page-title {
-  font-size: 2rem;
-  font-weight: 800;
-  margin-bottom: 0.25rem;
-  letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #fff 60%, rgba(255,255,255,0.7) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.subtitle {
-  color: var(--text-secondary);
-  font-size: 0.95rem;
-}
-
-.filters-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.25rem;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.search-wrapper {
-  position: relative;
-  width: 100%;
-  max-width: 320px;
-}
-
-.search-icon {
-  position: absolute;
-  left: 0.9rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-secondary);
-  display: flex;
-  align-items: center;
-  pointer-events: none;
-}
-
-.search-input {
-  padding-left: 2.5rem;
-}
-
-.filter-buttons {
-  display: flex;
-  gap: 0.625rem;
-}
-
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
-}
-
-.project-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 1.5rem;
-  min-height: 260px;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.due-date {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  font-weight: 500;
-}
-
-.card-body {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  flex-grow: 1;
-}
-
-.project-name {
-  font-size: 1.15rem;
-  color: #fff;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-
-.project-desc {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  line-height: 1.5;
-}
-
-.progress-section {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.progress-label {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-  font-weight: 600;
-}
-
-.progress-pct {
-  color: #fff;
-}
-
-.progress-track {
-  height: 6px;
-  background-color: rgba(255, 255, 255, 0.03);
-  border-radius: var(--radius-full);
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.02);
-}
-
-.progress-bar {
-  height: 100%;
-  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
-  border-radius: var(--radius-full);
-  transition: width var(--transition-normal);
-  box-shadow: 0 0 8px rgba(139, 92, 246, 0.3);
-}
-
-.card-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid var(--border-color);
-  padding-top: 1rem;
-}
-
-.owner-info {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.owner-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
-  font-weight: 700;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.owner-name {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #fff;
-  margin: 0;
-}
-
-.owner-role {
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  margin: 0;
-}
-
-.tasks-badge {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
-  background-color: rgba(255, 255, 255, 0.03);
-  padding: 0.3rem 0.6rem;
-  border-radius: var(--radius-sm);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  border: 1px solid rgba(255, 255, 255, 0.03);
-}
-</style>

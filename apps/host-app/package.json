@@ -8,10 +8,13 @@
     "start": "next start --port 3000 -H 0.0.0.0"
   },
   "dependencies": {
+    "@tailwindcss/postcss": "^4.3.2",
     "next": "^14.2.4",
+    "postcss": "^8.5.16",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "shared-ui": "*",
-    "shared-utils": "*"
+    "shared-utils": "*",
+    "tailwindcss": "^4.3.2"
   }
 }

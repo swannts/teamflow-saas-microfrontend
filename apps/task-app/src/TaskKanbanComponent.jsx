@@ -6,11 +6,18 @@ export default function TaskKanbanComponent() {
   const [tasks, setTasks] = useState(INITIAL_TASKS);
 
   const columns = [
-    { key: STATUS_CONSTANTS.TASKS.TODO, title: 'Todo', color: '#f59e0b', glow: 'rgba(245, 158, 11, 0.15)' },
-    { key: STATUS_CONSTANTS.TASKS.IN_PROGRESS, title: 'In Progress', color: '#3b82f6', glow: 'rgba(59, 130, 246, 0.15)' },
-    { key: STATUS_CONSTANTS.TASKS.REVIEW, title: 'Review', color: '#a855f7', glow: 'rgba(168, 85, 247, 0.15)' },
-    { key: STATUS_CONSTANTS.TASKS.DONE, title: 'Done', color: '#10b981', glow: 'rgba(16, 185, 129, 0.15)' }
+    { key: STATUS_CONSTANTS.TASKS.TODO, title: 'Todo', color: '#f59e0b', borderClass: 'border-amber-500', glow: 'rgba(245, 158, 11, 0.15)' },
+    { key: STATUS_CONSTANTS.TASKS.IN_PROGRESS, title: 'In Progress', color: '#3b82f6', borderClass: 'border-blue-500', glow: 'rgba(59, 130, 246, 0.15)' },
+    { key: STATUS_CONSTANTS.TASKS.REVIEW, title: 'Review', color: '#a855f7', borderClass: 'border-purple-500', glow: 'rgba(168, 85, 247, 0.15)' },
+    { key: STATUS_CONSTANTS.TASKS.DONE, title: 'Done', color: '#10b981', borderClass: 'border-emerald-500', glow: 'rgba(16, 185, 129, 0.15)' }
   ];
+
+  const colHoverStyles = {
+    [STATUS_CONSTANTS.TASKS.TODO]: 'hover:border-amber-500 hover:shadow-[0_10px_25px_-5px_rgba(245,158,11,0.15)]',
+    [STATUS_CONSTANTS.TASKS.IN_PROGRESS]: 'hover:border-blue-500 hover:shadow-[0_10px_25px_-5px_rgba(59,130,246,0.15)]',
+    [STATUS_CONSTANTS.TASKS.REVIEW]: 'hover:border-purple-500 hover:shadow-[0_10px_25px_-5px_rgba(168,85,247,0.15)]',
+    [STATUS_CONSTANTS.TASKS.DONE]: 'hover:border-emerald-500 hover:shadow-[0_10px_25px_-5px_rgba(16,185,129,0.15)]'
+  };
 
   const getPriorityVariant = (priority) => {
     switch (priority) {
@@ -34,19 +41,19 @@ export default function TaskKanbanComponent() {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+    <div className="flex flex-col gap-8 animate-fade-in">
       {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div className="flex justify-between items-center">
         <div>
-          <h1 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '0.25rem', letterSpacing: '-0.02em', background: 'linear-gradient(135deg, #fff 60%, rgba(255,255,255,0.7) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+          <h1 className="text-3xl font-extrabold mb-1 tracking-tight bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">
             Sprint Board
           </h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
+          <p className="text-text-secondary text-sm">
             Track progress, update task statuses, and collaborate on sprints.
           </p>
         </div>
         <Button variant="primary" onClick={() => alert('Static demo: Adding tasks is disabled.')}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '6px' }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="mr-1.5">
             <line x1="12" y1="5" x2="12" y2="19"></line>
             <line x1="5" y1="12" x2="19" y2="12"></line>
           </svg>
@@ -55,156 +62,81 @@ export default function TaskKanbanComponent() {
       </div>
 
       {/* Board Layout */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-        gap: '1.5rem',
-        alignItems: 'flex-start'
-      }}>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
         {columns.map(col => {
           const colTasks = tasks.filter(t => t.column === col.key);
           return (
-            <div key={col.key} style={{
-              background: 'rgba(17, 24, 39, 0.45)',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--border-color)',
-              padding: '1.25rem',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '1.25rem',
-              minHeight: '500px',
-              boxShadow: '0 4px 30px rgba(0,0,0,0.15)'
-            }}>
+            <div key={col.key} className="bg-slate-900/45 rounded-md border border-border-color p-5 flex flex-col gap-5 min-h-[500px] shadow-[0_4px_30px_rgba(0,0,0,0.15)]">
               {/* Column Title */}
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                paddingBottom: '0.75rem',
-                borderBottom: `2px solid ${col.color}`
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span style={{
-                    width: '6px',
-                    height: '6px',
-                    borderRadius: '50%',
-                    backgroundColor: col.color,
-                    boxShadow: `0 0 8px ${col.color}`
-                  }} />
-                  <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#fff', letterSpacing: '0.01em' }}>
+              <div 
+                className={`flex justify-between items-center pb-3 border-b-2 ${col.borderClass}`}
+              >
+                <div className="flex items-center gap-2">
+                  <span 
+                    className="w-1.5 h-1.5 rounded-full"
+                    style={{
+                      backgroundColor: col.color,
+                      boxShadow: `0 0 8px ${col.color}`
+                    }}
+                  />
+                  <h3 className="text-sm font-bold text-white tracking-wider">
                     {col.title}
                   </h3>
                 </div>
-                <Badge variant="secondary" style={{ backgroundColor: 'rgba(255,255,255,0.04)', color: 'var(--text-secondary)' }}>
+                <Badge variant="secondary" className="bg-white/4 text-text-secondary">
                   {colTasks.length}
                 </Badge>
               </div>
 
               {/* Task Items */}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem' }}>
+              <div className="flex flex-col gap-3.5">
                 {colTasks.length === 0 ? (
-                  <div style={{
-                    color: 'var(--text-muted)',
-                    fontSize: '0.85rem',
-                    textAlign: 'center',
-                    padding: '3rem 0',
-                    border: '1px dashed rgba(255,255,255,0.03)',
-                    borderRadius: 'var(--radius-sm)'
-                  }}>
+                  <div className="text-text-muted text-xs text-center py-12 border border-dashed border-white/3 rounded-sm">
                     No tasks here
                   </div>
                 ) : (
                   colTasks.map(task => (
-                    <Card key={task.id} style={{
-                      padding: '1.1rem',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '0.85rem',
-                      transition: 'all 0.2s ease',
-                      border: '1px solid rgba(255,255,255,0.04)'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = col.color;
-                      e.currentTarget.style.boxShadow = `0 10px 25px -5px ${col.glow}`;
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = 'rgba(255,255,255,0.04)';
-                      e.currentTarget.style.boxShadow = 'none';
-                    }}
+                    <Card 
+                      key={task.id} 
+                      className={`flex flex-col gap-3.5 hover:scale-[1.01] hover:bg-white/1 border border-white/4 transition-all duration-200 ${colHoverStyles[col.key]}`}
                     >
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div className="flex justify-between items-center">
                         <Badge variant={getPriorityVariant(task.priority)}>
                           {task.priority}
                         </Badge>
-                        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 500 }}>
+                        <span className="text-xs text-text-muted font-medium">
                           {formatDate(task.dueDate)}
                         </span>
                       </div>
 
-                      <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#fff', margin: 0, letterSpacing: '-0.01em' }}>
+                      <h4 className="text-[0.95rem] font-bold text-white m-0 tracking-tight">
                         {task.title}
                       </h4>
 
-                      <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.45 }}>
+                      <p className="text-xs text-text-secondary m-0 leading-relaxed">
                         {task.description}
                       </p>
 
                       {/* Card Footer */}
-                      <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        borderTop: '1px solid var(--border-color)',
-                        paddingTop: '0.75rem',
-                        marginTop: '0.25rem'
-                      }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                          <div style={{
-                            width: '24px',
-                            height: '24px',
-                            borderRadius: '50%',
-                            backgroundColor: task.assignee.color,
-                            color: '#fff',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontSize: '0.7rem',
-                            fontWeight: 700,
-                            border: '1px solid rgba(255, 255, 255, 0.1)'
-                          }}>
+                      <div className="flex justify-between items-center border-t border-border-color pt-3 mt-1">
+                        <div className="flex items-center gap-2">
+                          <div 
+                            className="w-6 h-6 rounded-full text-white flex items-center justify-center text-[10px] font-bold border border-white/10"
+                            style={{ backgroundColor: task.assignee.color }}
+                          >
                             {task.assignee.initials}
                           </div>
-                          <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 500 }}>
+                          <span className="text-xs text-text-secondary font-medium">
                             {task.assignee.name.split(' ')[0]}
                           </span>
                         </div>
 
                         {/* Movement controls */}
-                        <div style={{ display: 'flex', gap: '0.35rem' }}>
+                        <div className="flex gap-1.5">
                           {col.key !== STATUS_CONSTANTS.TASKS.TODO && (
                             <button
                               onClick={() => moveTask(task.id, -1)}
-                              style={{
-                                background: 'rgba(255,255,255,0.03)',
-                                border: '1px solid rgba(255,255,255,0.06)',
-                                color: 'var(--text-secondary)',
-                                borderRadius: '4px',
-                                width: '24px',
-                                height: '24px',
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                transition: 'all 0.15s ease'
-                              }}
-                              onMouseEnter={(e) => {
-                                e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)';
-                                e.currentTarget.style.color = '#fff';
-                              }}
-                              onMouseLeave={(e) => {
-                                e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.03)';
-                                e.currentTarget.style.color = 'var(--text-secondary)';
-                              }}
+                              className="bg-white/3 border border-white/6 text-text-secondary rounded-[4px] w-6 h-6 cursor-pointer flex items-center justify-center transition-all hover:bg-white/8 hover:text-white"
                               title="Move left"
                             >
                               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -215,27 +147,7 @@ export default function TaskKanbanComponent() {
                           {col.key !== STATUS_CONSTANTS.TASKS.DONE && (
                             <button
                               onClick={() => moveTask(task.id, 1)}
-                              style={{
-                                background: 'rgba(255,255,255,0.03)',
-                                border: '1px solid rgba(255,255,255,0.06)',
-                                color: 'var(--text-secondary)',
-                                borderRadius: '4px',
-                                width: '24px',
-                                height: '24px',
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                transition: 'all 0.15s ease'
-                              }}
-                              onMouseEnter={(e) => {
-                                e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)';
-                                e.currentTarget.style.color = '#fff';
-                              }}
-                              onMouseLeave={(e) => {
-                                e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.03)';
-                                e.currentTarget.style.color = 'var(--text-secondary)';
-                              }}
+                              className="bg-white/3 border border-white/6 text-text-secondary rounded-[4px] w-6 h-6 cursor-pointer flex items-center justify-center transition-all hover:bg-white/8 hover:text-white"
                               title="Move right"
                             >
                               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

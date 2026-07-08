@@ -15,7 +15,7 @@ export default function DashboardComponent() {
       badge: 'Tracking', 
       variant: 'info', 
       icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--info)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg className="w-6 h-6 stroke-info stroke-2 stroke-linecap-round stroke-linejoin-round fill-none" viewBox="0 0 24 24">
           <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
         </svg>
       ),
@@ -27,7 +27,7 @@ export default function DashboardComponent() {
       badge: 'Sprint 1', 
       variant: 'warning', 
       icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg className="w-6 h-6 stroke-warning stroke-2 stroke-linecap-round stroke-linejoin-round fill-none" viewBox="0 0 24 24">
           <path d="M12 20h9" />
           <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
         </svg>
@@ -40,7 +40,7 @@ export default function DashboardComponent() {
       badge: `${Math.round((completedTasks/totalTasks)*100)}% Done`, 
       variant: 'success', 
       icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--success)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg className="w-6 h-6 stroke-success stroke-2 stroke-linecap-round stroke-linejoin-round fill-none" viewBox="0 0 24 24">
           <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
           <polyline points="22 4 12 14.01 9 11.01" />
         </svg>
@@ -53,7 +53,7 @@ export default function DashboardComponent() {
       badge: 'Active Now', 
       variant: 'success', 
       icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <svg className="w-6 h-6 stroke-primary stroke-2 stroke-linecap-round stroke-linejoin-round fill-none" viewBox="0 0 24 24">
           <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
           <circle cx="9" cy="7" r="4" />
           <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
@@ -65,63 +65,38 @@ export default function DashboardComponent() {
   ];
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+    <div className="flex flex-col gap-8 animate-fade-in">
       {/* Header Banner */}
-      <div style={{
-        background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(217, 70, 239, 0.05) 100%)',
-        border: '1px solid var(--border-color)',
-        borderRadius: 'var(--radius-md)',
-        padding: '2rem',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        <div style={{ position: 'relative', zIndex: 1 }}>
-          <h1 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '0.5rem', letterSpacing: '-0.02em', background: 'linear-gradient(135deg, #fff 60%, rgba(255,255,255,0.7) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+      <div className="bg-gradient-to-r from-primary/10 to-accent/5 border border-border-color rounded-md p-8 relative overflow-hidden">
+        <div className="relative z-10">
+          <h1 className="text-3xl font-extrabold mb-2 tracking-tight bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">
             Workspace Insights
           </h1>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', maxWidth: '600px', lineHeight: 1.5 }}>
+          <p className="text-text-secondary text-sm max-w-[600px] leading-relaxed">
             Monitor your microfrontend workflows, tracking sprint cycles, projects progress, and live developer contributions in real-time.
           </p>
         </div>
-        <div style={{
-          position: 'absolute',
-          right: '-50px',
-          bottom: '-50px',
-          width: '200px',
-          height: '200px',
-          background: 'radial-gradient(circle, var(--accent-glow) 0%, transparent 70%)',
-          filter: 'blur(30px)'
-        }} />
+        <div className="absolute -right-[50px] -bottom-[50px] w-[200px] h-[200px] bg-accent-glow rounded-full blur-[30px] pointer-events-none" />
       </div>
 
       {/* Grid Stats */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-        gap: '1.5rem'
-      }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((s, index) => (
-          <Card key={index} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div style={{
-                width: '46px',
-                height: '46px',
-                borderRadius: '10px',
-                background: s.glow,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                border: '1px solid rgba(255,255,255,0.03)'
-              }}>
+          <Card key={index} className="flex flex-col gap-5 hover:border-primary/20 hover:scale-[1.01] transition-all">
+            <div className="flex justify-between items-center">
+              <div 
+                className="w-[46px] h-[46px] rounded-[10px] flex items-center justify-center border border-white/3" 
+                style={{ backgroundColor: s.glow }}
+              >
                 {s.icon}
               </div>
               <Badge variant={s.variant}>{s.badge}</Badge>
             </div>
             <div>
-              <h3 style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.35rem', letterSpacing: '0.02em', textTransform: 'uppercase' }}>
+              <h3 className="text-[0.75rem] font-bold text-text-secondary mb-1 tracking-wider uppercase">
                 {s.label}
               </h3>
-              <p style={{ fontSize: '2.25rem', fontWeight: 800, color: '#fff', letterSpacing: '-0.03em' }}>
+              <p className="text-3xl font-extrabold text-white tracking-tight">
                 {s.value}
               </p>
             </div>
@@ -130,45 +105,27 @@ export default function DashboardComponent() {
       </div>
 
       {/* Lower section */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
-        gap: '1.5rem'
-      }}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Activities */}
-        <Card style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
-            <h2 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#fff' }}>Activity Log</h2>
-            <span style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 600, cursor: 'pointer' }}>View All</span>
+        <Card className="flex flex-col gap-6">
+          <div className="flex justify-between items-center border-b border-border-color pb-4">
+            <h2 className="text-lg font-bold text-white">Activity Log</h2>
+            <span className="text-xs text-primary font-semibold cursor-pointer hover:underline">View All</span>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          <div className="flex flex-col gap-5">
             {RECENT_ACTIVITIES.map((act) => (
-              <div key={act.id} style={{
-                display: 'flex',
-                gap: '1rem',
-                alignItems: 'flex-start'
-              }}>
-                <div style={{
-                  width: '34px',
-                  height: '34px',
-                  borderRadius: '50%',
-                  backgroundColor: act.user.color || 'var(--primary)',
-                  color: '#fff',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '0.75rem',
-                  fontWeight: 700,
-                  boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)'
-                }}>
+              <div key={act.id} className="flex gap-4 items-start">
+                <div 
+                  className="w-[34px] h-[34px] rounded-full text-white flex items-center justify-center text-xs font-bold shadow-md border border-white/10"
+                  style={{ backgroundColor: act.user.color || 'var(--color-primary)' }}
+                >
                   {act.user.initials}
                 </div>
-                <div style={{ flex: 1, fontSize: '0.875rem', lineHeight: 1.4 }}>
-                  <p style={{ color: 'var(--text-primary)', margin: 0 }}>
-                    <strong style={{ fontWeight: 600, color: '#fff' }}>{act.user.name}</strong> {act.action} <span style={{ color: 'var(--primary)', fontWeight: 600 }}>{act.target}</span>
+                <div className="flex-1 text-sm leading-relaxed">
+                  <p className="text-text-primary m-0">
+                    <strong className="font-semibold text-white">{act.user.name}</strong> {act.action} <span className="text-primary font-semibold">{act.target}</span>
                   </p>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.2rem', display: 'block' }}>{act.time}</span>
+                  <span className="text-xs text-text-muted mt-1 block">{act.time}</span>
                 </div>
               </div>
             ))}
@@ -176,57 +133,31 @@ export default function DashboardComponent() {
         </Card>
 
         {/* Team Members List */}
-        <Card style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
-            <h2 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#fff' }}>Team Directory</h2>
+        <Card className="flex flex-col gap-6">
+          <div className="flex justify-between items-center border-b border-border-color pb-4">
+            <h2 className="text-lg font-bold text-white">Team Directory</h2>
             <Badge variant="info">Collab</Badge>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div className="flex flex-col gap-4">
             {INITIAL_MEMBERS.map((member, index) => (
-              <div key={index} style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '0.5rem',
-                borderRadius: 'var(--radius-sm)',
-                transition: 'background-color var(--transition-fast)',
-                cursor: 'pointer'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.02)'}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-                  <div style={{
-                    width: '38px',
-                    height: '38px',
-                    borderRadius: '50%',
-                    backgroundColor: member.color,
-                    color: '#fff',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontWeight: 700,
-                    fontSize: '0.875rem',
-                    border: '1px solid rgba(255, 255, 255, 0.1)'
-                  }}>
+              <div key={index} className="flex items-center justify-between p-2 rounded-sm transition-colors duration-150 cursor-pointer hover:bg-white/2">
+                <div className="flex items-center gap-3.5">
+                  <div 
+                    className="w-[38px] h-[38px] rounded-full text-white flex items-center justify-center font-bold text-sm border border-white/10"
+                    style={{ backgroundColor: member.color }}
+                  >
                     {member.initials}
                   </div>
                   <div>
-                    <h4 style={{ fontSize: '0.875rem', fontWeight: 600, color: '#fff', margin: 0 }}>{member.name}</h4>
-                    <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: 0 }}>{member.role}</p>
+                    <h4 className="text-sm font-semibold text-white m-0">{member.name}</h4>
+                    <p className="text-xs text-text-muted m-0">{member.role}</p>
                   </div>
                 </div>
                 
                 {/* Online Status Glowing Indicator */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span style={{
-                    width: '6px',
-                    height: '6px',
-                    borderRadius: '50%',
-                    backgroundColor: 'var(--success)',
-                    boxShadow: '0 0 8px var(--success)'
-                  }} />
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Online</span>
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-success shadow-[0_0_8px_var(--color-success)]" />
+                  <span className="text-xs text-text-muted">Online</span>
                 </div>
               </div>
             ))}

@@ -17,37 +17,17 @@ export default function RootLayout({ children }) {
           <div className="tf-bg-glow-1"></div>
           <div className="tf-bg-glow-2"></div>
         </div>
-        <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg-primary)', position: 'relative', zIndex: 1 }}>
+        <div className="flex min-h-screen bg-bg-primary relative z-1">
           
           {/* Sidebar (SSR Rendered Frame) */}
-          <aside style={{
-            width: '260px',
-            background: 'var(--glass-bg)',
-            backdropFilter: 'var(--glass-blur)',
-            borderRight: '1px solid var(--glass-border)',
-            display: 'flex',
-            flexDirection: 'column',
-            padding: '1.5rem'
-          }}>
+          <aside className="w-[260px] bg-glass-bg backdrop-blur-[20px] border-r border-glass-border flex flex-col p-6">
             {/* Logo Area */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '2.5rem' }}>
-              <div style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '8px',
-                background: 'linear-gradient(135deg, var(--primary), #818cf8)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontWeight: '700',
-                fontSize: '1.2rem',
-                color: '#fff',
-                boxShadow: '0 4px 14px rgba(99, 102, 241, 0.4)'
-              }}>
+            <div className="flex items-center gap-3 mb-10">
+              <div className="w-9 h-9 rounded bg-gradient-to-br from-primary to-[#818cf8] flex items-center justify-center font-bold text-lg text-white shadow-[0_4px_14px_rgba(99,102,241,0.4)]">
                 TF
               </div>
-              <span style={{ fontSize: '1.25rem', fontWeight: 700, letterSpacing: '-0.02em', color: '#fff' }}>
-                TeamFlow <span style={{ fontSize: '0.65rem', padding: '2px 6px', background: 'rgba(255,255,255,0.08)', borderRadius: '4px', verticalAlign: 'middle', marginLeft: '4px' }}>SaaS</span>
+              <span className="text-xl font-bold tracking-tight text-white">
+                TeamFlow <span className="text-[10px] px-1.5 py-0.5 bg-white/8 rounded align-middle ml-1 font-normal">SaaS</span>
               </span>
             </div>
 
@@ -55,108 +35,58 @@ export default function RootLayout({ children }) {
             <Navigation />
 
             {/* User Profile Card inside Sidebar */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.75rem',
-              padding: '0.85rem 0.5rem',
-              marginTop: 'auto',
-              marginBottom: '1rem',
-              borderTop: '1px solid var(--border-color)',
-              paddingTop: '1.25rem'
-            }}>
-              <div style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '50%',
-                background: 'linear-gradient(135deg, var(--accent), var(--primary))',
-                color: '#fff',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontWeight: 600,
-                fontSize: '0.85rem',
-                border: '1px solid rgba(255, 255, 255, 0.1)'
-              }}>
+            <div className="flex items-center gap-3 p-1.5 mt-auto mb-4 border-t border-border-color pt-5">
+              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-accent to-primary text-white flex items-center justify-center font-semibold text-sm border border-white/10">
                 SD
               </div>
-              <div style={{ flex: 1, overflow: 'hidden' }}>
-                <span style={{ fontSize: '0.85rem', fontWeight: 600, display: 'block', color: '#fff', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+              <div className="flex-1 overflow-hidden">
+                <span className="text-sm font-semibold block text-white truncate">
                   Swann Dev
                 </span>
-                <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', display: 'block' }}>
+                <span className="text-[11px] text-text-muted block">
                   swann@teamflow.io
                 </span>
               </div>
             </div>
 
             {/* Footer Info */}
-            <div style={{
-              fontSize: '0.675rem',
-              color: 'var(--text-muted)',
-              textAlign: 'center',
-              opacity: 0.7
-            }}>
+            <div className="text-[11px] text-text-muted text-center opacity-70">
               TeamFlow Workspace v1.1
             </div>
           </aside>
 
           {/* Main Content Area */}
-          <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
+          <div className="flex-1 flex flex-col overflow-y-auto">
             
             {/* Top Navbar (SSR Rendered Frame) */}
-            <header style={{
-              height: '70px',
-              background: 'var(--glass-bg)',
-              backdropFilter: 'var(--glass-blur)',
-              borderBottom: '1px solid var(--glass-border)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '0 2rem',
-              position: 'sticky',
-              top: 0,
-              zIndex: 10
-            }}>
+            <header className="h-[70px] bg-glass-bg backdrop-blur-[20px] border-b border-glass-border flex items-center justify-between px-8 sticky top-0 z-10">
               <div>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                <span className="text-[10px] text-text-muted block font-bold tracking-wider">
                   WORKSPACE
                 </span>
-                <span style={{ color: '#fff', fontSize: '0.9rem', fontWeight: 600 }}>
+                <span className="text-white text-sm font-semibold">
                   Enterprise Microfrontend Demo
                 </span>
               </div>
               
               {/* User Profile */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <div style={{ textAlign: 'right' }}>
-                  <span style={{ fontSize: '0.85rem', fontWeight: 500, display: 'block', color: '#fff' }}>
+              <div className="flex items-center gap-3">
+                <div className="text-right">
+                  <span className="text-sm font-medium block text-white">
                     Swann Dev
                   </span>
-                  <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+                  <span className="text-[11px] text-text-muted">
                     Developer Workspace
                   </span>
                 </div>
-                <div style={{
-                  width: '38px',
-                  height: '38px',
-                  borderRadius: '50%',
-                  background: 'var(--primary)',
-                  color: '#fff',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontWeight: 600,
-                  fontSize: '0.9rem',
-                  border: '2px solid rgba(255, 255, 255, 0.1)'
-                }}>
+                <div className="w-[38px] h-[38px] rounded-full bg-primary text-white flex items-center justify-center font-semibold text-sm border-2 border-white/10">
                   SD
                 </div>
               </div>
             </header>
 
             {/* Dynamic Pages */}
-            <main style={{ padding: '2rem', flex: 1 }}>
+            <main className="p-8 flex-1">
               {children}
             </main>
           </div>

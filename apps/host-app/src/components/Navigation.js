@@ -11,8 +11,8 @@ export default function Navigation() {
     { 
       href: '/dashboard', 
       label: 'Dashboard',
-      icon: (color) => (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      icon: (isActive) => (
+        <svg className={`w-[18px] h-[18px] fill-none stroke-2 stroke-[linecap:round] stroke-[linejoin:round] ${isActive ? 'stroke-primary' : 'stroke-text-secondary group-hover:stroke-white'}`} viewBox="0 0 24 24">
           <rect x="3" y="3" width="7" height="9" />
           <rect x="14" y="3" width="7" height="5" />
           <rect x="14" y="12" width="7" height="9" />
@@ -23,8 +23,8 @@ export default function Navigation() {
     { 
       href: '/projects', 
       label: 'Projects',
-      icon: (color) => (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      icon: (isActive) => (
+        <svg className={`w-[18px] h-[18px] fill-none stroke-2 stroke-[linecap:round] stroke-[linejoin:round] ${isActive ? 'stroke-primary' : 'stroke-text-secondary group-hover:stroke-white'}`} viewBox="0 0 24 24">
           <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
         </svg>
       )
@@ -32,8 +32,8 @@ export default function Navigation() {
     { 
       href: '/tasks', 
       label: 'Tasks Kanban',
-      icon: (color) => (
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      icon: (isActive) => (
+        <svg className={`w-[18px] h-[18px] fill-none stroke-2 stroke-[linecap:round] stroke-[linejoin:round] ${isActive ? 'stroke-primary' : 'stroke-text-secondary group-hover:stroke-white'}`} viewBox="0 0 24 24">
           <rect x="3" y="3" width="18" height="18" rx="2" />
           <path d="M9 3v18" />
           <path d="M15 3v18" />
@@ -43,46 +43,25 @@ export default function Navigation() {
   ];
 
   return (
-    <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem', flexGrow: 1 }}>
+    <nav className="flex flex-col gap-2.5 grow">
       {navItems.map((item) => {
         const isActive = pathname === item.href;
-        const strokeColor = isActive ? 'var(--primary)' : 'var(--text-secondary)';
         return (
           <Link 
             key={item.href}
             href={item.href}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.875rem',
-              padding: '0.8rem 1.1rem',
-              borderRadius: 'var(--radius-sm)',
-              textDecoration: 'none',
-              fontSize: '0.875rem',
-              fontWeight: isActive ? 600 : 500,
-              color: isActive ? '#fff' : 'var(--text-secondary)',
-              backgroundColor: isActive ? 'rgba(139, 92, 246, 0.08)' : 'transparent',
-              border: '1px solid',
-              borderColor: isActive ? 'rgba(139, 92, 246, 0.15)' : 'transparent',
-              transition: 'all var(--transition-fast)',
-              position: 'relative'
-            }}
+            className={`group flex items-center gap-3.5 px-4.5 py-3.2 rounded-sm no-underline text-sm border transition-all relative ${
+              isActive 
+                ? 'bg-primary/8 border-primary/15 text-white font-semibold' 
+                : 'text-text-secondary hover:text-white hover:bg-white/3 font-medium border-transparent'
+            }`}
           >
             {/* Active Left Border Indicator */}
             {isActive && (
-              <span style={{
-                position: 'absolute',
-                left: 0,
-                top: '25%',
-                height: '50%',
-                width: '3px',
-                background: 'var(--primary)',
-                borderRadius: '0 4px 4px 0',
-                boxShadow: '0 0 8px var(--primary)'
-              }} />
+              <span className="absolute left-0 top-[25%] h-1/2 w-[3px] bg-primary rounded-r-sm shadow-[0_0_8px_var(--color-primary)]" />
             )}
             
-            {item.icon(strokeColor)}
+            {item.icon(isActive)}
             <span>{item.label}</span>
           </Link>
         );
