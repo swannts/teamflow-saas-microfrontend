@@ -62,3 +62,4 @@ Thumbs.db
 # Env files
 .env
 *.local
+.next

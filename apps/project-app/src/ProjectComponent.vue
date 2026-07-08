@@ -7,14 +7,23 @@
         <p class="subtitle">Manage, filter, and track all active workspaces.</p>
       </div>
       <button class="tf-btn tf-btn-primary" @click="createNewProject">
-        <span>+</span> New Project
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        New Project
       </button>
     </div>
 
     <!-- Filters & Search Bar -->
     <div class="filters-bar">
       <div class="search-wrapper">
-        <span class="search-icon">🔍</span>
+        <span class="search-icon">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </span>
         <input 
           type="text" 
           v-model="searchQuery" 
@@ -40,7 +49,7 @@
       <div 
         v-for="project in filteredProjects" 
         :key="project.id" 
-        class="tf-card project-card"
+        class="tf-card project-card animate-fade-in"
       >
         <div class="card-header">
           <span 
@@ -51,14 +60,16 @@
           <span class="due-date">Due: {{ formatDateHelper(project.dueDate) }}</span>
         </div>
 
-        <h3 class="project-name">{{ project.name }}</h3>
-        <p class="project-desc">{{ project.description }}</p>
+        <div class="card-body">
+          <h3 class="project-name">{{ project.name }}</h3>
+          <p class="project-desc">{{ project.description }}</p>
+        </div>
 
         <!-- Progress bar -->
         <div class="progress-section">
           <div class="progress-label">
             <span>Progress</span>
-            <span>{{ project.progress }}%</span>
+            <span class="progress-pct">{{ project.progress }}%</span>
           </div>
           <div class="progress-track">
             <div class="progress-bar" :style="{ width: project.progress + '%' }"></div>
@@ -80,7 +91,14 @@
             </div>
           </div>
           <span class="tasks-badge">
-            📋 {{ project.taskCount }} tasks
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            {{ project.taskCount }} tasks
           </span>
         </div>
       </div>
@@ -157,10 +175,13 @@ export default {
 }
 
 .page-title {
-  font-size: 1.875rem;
-  font-weight: 700;
+  font-size: 2rem;
+  font-weight: 800;
   margin-bottom: 0.25rem;
-  color: #fff;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, #fff 60%, rgba(255,255,255,0.7) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .subtitle {
@@ -171,7 +192,7 @@ export default {
 .filters-bar {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1.25rem;
   justify-content: space-between;
   align-items: center;
 }
@@ -184,25 +205,27 @@ export default {
 
 .search-icon {
   position: absolute;
-  left: 0.75rem;
+  left: 0.9rem;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--text-muted);
-  font-size: 0.875rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
 }
 
 .search-input {
-  padding-left: 2.25rem;
+  padding-left: 2.5rem;
 }
 
 .filter-buttons {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.625rem;
 }
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1.5rem;
 }
 
@@ -210,7 +233,8 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 1.25rem;
+  gap: 1.5rem;
+  min-height: 260px;
 }
 
 .card-header {
@@ -222,19 +246,27 @@ export default {
 .due-date {
   font-size: 0.75rem;
   color: var(--text-muted);
+  font-weight: 500;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-grow: 1;
 }
 
 .project-name {
-  font-size: 1.125rem;
+  font-size: 1.15rem;
   color: #fff;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 .project-desc {
   font-size: 0.875rem;
   color: var(--text-secondary);
   line-height: 1.5;
-  flex-grow: 1;
 }
 
 .progress-section {
@@ -248,63 +280,78 @@ export default {
   justify-content: space-between;
   font-size: 0.75rem;
   color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.progress-pct {
+  color: #fff;
 }
 
 .progress-track {
   height: 6px;
-  background-color: var(--bg-tertiary);
+  background-color: rgba(255, 255, 255, 0.03);
   border-radius: var(--radius-full);
   overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.02);
 }
 
 .progress-bar {
   height: 100%;
-  background-color: var(--primary);
+  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
   border-radius: var(--radius-full);
   transition: width var(--transition-normal);
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.3);
 }
 
 .card-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-color);
+  padding-top: 1rem;
 }
 
 .owner-info {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
 .owner-avatar {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.7rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .owner-name {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--text-primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fff;
   margin: 0;
 }
 
 .owner-role {
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
   margin: 0;
 }
 
 .tasks-badge {
   font-size: 0.75rem;
-  color: var(--text-muted);
+  color: var(--text-secondary);
+  background-color: rgba(255, 255, 255, 0.03);
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: 1px solid rgba(255, 255, 255, 0.03);
 }
 </style>
